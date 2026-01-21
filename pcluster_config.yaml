@@ -1,0 +1,47 @@
+Region: us-east-1
+Image:
+  Os: alinux2023
+  CustomAmi: ami-0160efb9210b2d112
+HeadNode:
+  InstanceType: t2.small
+  Networking:
+    SubnetId: subnet-0f3baa4745c11d34f
+  Ssh:
+    KeyName: pcluster-key
+  # CustomActions:
+  #   OnNodeConfigured:
+  #     Script: s3://pcluster-install-haopeng/install-mpi.sh
+  # # Bucket permissions
+  # Iam:
+  #   S3Access:
+  #     - BucketName: pcluster-install-haopeng
+  #       EnableWriteAccess: false
+Scheduling:
+  Scheduler: slurm
+  SlurmQueues:
+  - Name: queue1
+    # CustomActions:
+    #   OnNodeConfigured:
+    #     Script: s3://pcluster-install-haopeng/install-mpi.sh
+    # # Bucket permissions
+    # Iam:
+    #   S3Access:
+    #     - BucketName: pcluster-install-haopeng
+    #       EnableWriteAccess: false
+    ComputeResources:
+    - Name: t2small
+      Instances:
+      - InstanceType: t2.small
+      MinCount: 0
+      MaxCount: 2
+    Networking:
+      SubnetIds:
+      - subnet-010fc0eb1d7a9c772
+SharedStorage:
+  - Name: shared
+    StorageType: Ebs
+    MountDir: /shared
+    EbsSettings:
+      Size: 20           # GB
+      VolumeType: gp3
+      Encrypted: true
